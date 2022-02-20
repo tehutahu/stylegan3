@@ -18,7 +18,6 @@ import PIL.Image
 import numpy as np
 import torch
 import dnnlib
-from torchvision.utils import make_grid
 from torch_utils import misc
 from torch_utils import training_stats
 from torch_utils.ops import conv2d_gradfix
@@ -420,9 +419,8 @@ def training_loop(
             for name, value in stats_metrics.items():
                 stats_tfevents.add_scalar(f'Metrics/{name}', value, global_step=global_step, walltime=walltime)
             if images is not None:
-                images = torch.cat([G_ema(z=z, c=c, noise_mode='const').cpu() for z, c in zip(grid_z, grid_c)])
-                grid = make_grid(images, nrow=8, normalize=True, value_range=[-1, 1])
-                stats_tfevents.add_image('fakes', grid, global_step=global_step, walltime=walltime)
+                images = image_covert(images, [-1, 1], num=8)
+                stats_tfevents.add_images('fakes', images, global_step=global_step, walltime=walltime)
             stats_tfevents.flush()
         if progress_fn is not None:
             progress_fn(cur_nimg // 1000, total_kimg)
