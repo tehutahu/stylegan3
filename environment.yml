@@ -1,5 +1,6 @@
 name: stylegan3
 channels:
+  - conda-forge
   - pytorch
   - nvidia
 dependencies:
@@ -16,6 +17,7 @@ dependencies:
   - ninja=1.10.2
   - matplotlib=3.4.2
   - imageio=2.9.0
+  - setuptools==59.5.0
   - pip:
     - imgui==1.3.0
     - glfw==2.2.0
